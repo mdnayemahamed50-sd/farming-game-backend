@@ -11,8 +11,8 @@ app.use(express.json());
 // DATABASE CONNECTION
 // =====================
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('✅ MongoDB Connected'))
-  .catch(err => console.error('❌ MongoDB Error:', err));
+  .then(() => console.log('тЬЕ MongoDB Connected'))
+  .catch(err => console.error('тЭМ MongoDB Error:', err));
 
 // =====================
 // MODELS
@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
   telegramId: { type: String, required: true, unique: true },
   username: { type: String },
   firstName: { type: String },
-  farmName: { type: String, default: 'আমার ফার্ম' },
+  farmName: { type: String, default: 'ржЖржорж╛рж░ ржлрж╛рж░рзНржо' },
   avatar: { type: String },
   coins: { type: Number, default: 100 },
   gems: { type: Number, default: 5 },
@@ -81,12 +81,12 @@ const Quest = mongoose.model('Quest', questSchema);
 // GAME DATA
 // =====================
 const CROPS = {
-  wheat:      { id: 'wheat',      name: 'গম',        emoji: '🌾', growTime: 5*60*1000,        seedCost: 10,   sellPrice: 25,    xp: 5,   unlockLevel: 1  },
-  corn:       { id: 'corn',       name: 'ভুট্টা',    emoji: '🌽', growTime: 15*60*1000,       seedCost: 30,   sellPrice: 80,    xp: 10,  unlockLevel: 1  },
-  tomato:     { id: 'tomato',     name: 'টমেটো',     emoji: '🍅', growTime: 30*60*1000,       seedCost: 60,   sellPrice: 180,   xp: 20,  unlockLevel: 10 },
-  strawberry: { id: 'strawberry', name: 'স্ট্রবেরি', emoji: '🍓', growTime: 60*60*1000,       seedCost: 120,  sellPrice: 400,   xp: 35,  unlockLevel: 10 },
-  sunflower:  { id: 'sunflower',  name: 'সূর্যমুখী', emoji: '🌻', growTime: 4*60*60*1000,     seedCost: 500,  sellPrice: 2000,  xp: 80,  unlockLevel: 30 },
-  grape:      { id: 'grape',      name: 'আঙুর',      emoji: '🍇', growTime: 12*60*60*1000,    seedCost: 2000, sellPrice: 10000, xp: 200, unlockLevel: 30 }
+  wheat:      { id: 'wheat',      name: 'ржЧржо',        emoji: 'ЁЯМ╛', growTime: 5*60*1000,        seedCost: 10,   sellPrice: 25,    xp: 5,   unlockLevel: 1  },
+  corn:       { id: 'corn',       name: 'ржнрзБржЯрзНржЯрж╛',    emoji: 'ЁЯМ╜', growTime: 15*60*1000,       seedCost: 30,   sellPrice: 80,    xp: 10,  unlockLevel: 1  },
+  tomato:     { id: 'tomato',     name: 'ржЯржорзЗржЯрзЛ',     emoji: 'ЁЯНЕ', growTime: 30*60*1000,       seedCost: 60,   sellPrice: 180,   xp: 20,  unlockLevel: 10 },
+  strawberry: { id: 'strawberry', name: 'рж╕рзНржЯрзНрж░ржмрзЗрж░рж┐', emoji: 'ЁЯНУ', growTime: 60*60*1000,       seedCost: 120,  sellPrice: 400,   xp: 35,  unlockLevel: 10 },
+  sunflower:  { id: 'sunflower',  name: 'рж╕рзВрж░рзНржпржорзБржЦрзА', emoji: 'ЁЯМ╗', growTime: 4*60*60*1000,     seedCost: 500,  sellPrice: 2000,  xp: 80,  unlockLevel: 30 },
+  grape:      { id: 'grape',      name: 'ржЖржЩрзБрж░',      emoji: 'ЁЯНЗ', growTime: 12*60*60*1000,    seedCost: 2000, sellPrice: 10000, xp: 200, unlockLevel: 30 }
 };
 
 const PLOT_UPGRADES = {
@@ -110,7 +110,7 @@ const userRouter = express.Router();
 userRouter.post('/login', async (req, res) => {
   try {
     const { telegramId, username, firstName, avatar } = req.body;
-    if (!telegramId) return res.status(400).json({ error: 'telegramId দরকার' });
+    if (!telegramId) return res.status(400).json({ error: 'telegramId ржжрж░ржХрж╛рж░' });
 
     let user = await User.findOne({ telegramId });
     if (!user) {
@@ -141,7 +141,7 @@ userRouter.post('/login', async (req, res) => {
 userRouter.get('/profile/:telegramId', async (req, res) => {
   try {
     const user = await User.findOne({ telegramId: req.params.telegramId });
-    if (!user) return res.status(404).json({ error: 'ইউজার পাওয়া যায়নি' });
+    if (!user) return res.status(404).json({ error: 'ржЗржЙржЬрж╛рж░ ржкрж╛ржУржпрж╝рж╛ ржпрж╛ржпрж╝ржирж┐' });
     res.json({ success: true, user });
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
@@ -162,7 +162,7 @@ const farmRouter = express.Router();
 farmRouter.get('/:telegramId', async (req, res) => {
   try {
     const farm = await Farm.findOne({ userId: req.params.telegramId });
-    if (!farm) return res.status(404).json({ error: 'ফার্ম পাওয়া যায়নি' });
+    if (!farm) return res.status(404).json({ error: 'ржлрж╛рж░рзНржо ржкрж╛ржУржпрж╝рж╛ ржпрж╛ржпрж╝ржирж┐' });
     const now = new Date();
     farm.plots.forEach(plot => {
       if (plot.status === 'planted' && plot.readyAt && now >= plot.readyAt) plot.status = 'ready';
@@ -176,15 +176,15 @@ farmRouter.post('/plant', async (req, res) => {
   try {
     const { telegramId, plotId, cropId } = req.body;
     const crop = CROPS[cropId];
-    if (!crop) return res.status(400).json({ error: 'ফসল পাওয়া যায়নি' });
+    if (!crop) return res.status(400).json({ error: 'ржлрж╕рж▓ ржкрж╛ржУржпрж╝рж╛ ржпрж╛ржпрж╝ржирж┐' });
 
     const user = await User.findOne({ telegramId });
-    if (user.level < crop.unlockLevel) return res.status(400).json({ error: `লেভেল ${crop.unlockLevel} লাগবে` });
-    if (user.coins < crop.seedCost) return res.status(400).json({ error: 'পর্যাপ্ত কয়েন নেই' });
+    if (user.level < crop.unlockLevel) return res.status(400).json({ error: `рж▓рзЗржнрзЗрж▓ ${crop.unlockLevel} рж▓рж╛ржЧржмрзЗ` });
+    if (user.coins < crop.seedCost) return res.status(400).json({ error: 'ржкрж░рзНржпрж╛ржкрзНржд ржХржпрж╝рзЗржи ржирзЗржЗ' });
 
     const farm = await Farm.findOne({ userId: telegramId });
     const plot = farm.plots.find(p => p.id === plotId);
-    if (!plot || plot.status !== 'empty') return res.status(400).json({ error: 'প্লট খালি নেই' });
+    if (!plot || plot.status !== 'empty') return res.status(400).json({ error: 'ржкрзНрж▓ржЯ ржЦрж╛рж▓рж┐ ржирзЗржЗ' });
 
     user.coins -= crop.seedCost;
     await user.save();
@@ -206,11 +206,11 @@ farmRouter.post('/harvest', async (req, res) => {
     const { telegramId, plotId } = req.body;
     const farm = await Farm.findOne({ userId: telegramId });
     const plot = farm.plots.find(p => p.id === plotId);
-    if (!plot || plot.status !== 'ready') return res.status(400).json({ error: 'ফসল এখনো তৈরি হয়নি' });
+    if (!plot || plot.status !== 'ready') return res.status(400).json({ error: 'ржлрж╕рж▓ ржПржЦржирзЛ рждрзИрж░рж┐ рж╣ржпрж╝ржирж┐' });
 
     const crop = CROPS[plot.cropId];
     const totalItems = Array.from(farm.warehouse.items.values()).reduce((a, b) => a + b, 0);
-    if (totalItems >= farm.warehouse.capacity) return res.status(400).json({ error: 'গুদামঘর ভর্তি!' });
+    if (totalItems >= farm.warehouse.capacity) return res.status(400).json({ error: 'ржЧрзБржжрж╛ржоржШрж░ ржнрж░рзНрждрж┐!' });
 
     const current = farm.warehouse.items.get(plot.cropId) || 0;
     farm.warehouse.items.set(plot.cropId, current + 1);
@@ -237,11 +237,11 @@ farmRouter.post('/sell', async (req, res) => {
   try {
     const { telegramId, cropId, amount } = req.body;
     const crop = CROPS[cropId];
-    if (!crop) return res.status(400).json({ error: 'ফসল পাওয়া যায়নি' });
+    if (!crop) return res.status(400).json({ error: 'ржлрж╕рж▓ ржкрж╛ржУржпрж╝рж╛ ржпрж╛ржпрж╝ржирж┐' });
 
     const farm = await Farm.findOne({ userId: telegramId });
     const current = farm.warehouse.items.get(cropId) || 0;
-    if (current < amount) return res.status(400).json({ error: 'পর্যাপ্ত ফসল নেই' });
+    if (current < amount) return res.status(400).json({ error: 'ржкрж░рзНржпрж╛ржкрзНржд ржлрж╕рж▓ ржирзЗржЗ' });
 
     farm.warehouse.items.set(cropId, current - amount);
     farm.markModified('warehouse.items');
@@ -264,9 +264,9 @@ farmRouter.post('/upgrade/plot', async (req, res) => {
     const user = await User.findOne({ telegramId });
     const nextLevel = farm.plotLevel + 1;
     const upgrade = PLOT_UPGRADES[nextLevel];
-    if (!upgrade) return res.status(400).json({ error: 'সর্বোচ্চ লেভেলে আছেন' });
+    if (!upgrade) return res.status(400).json({ error: 'рж╕рж░рзНржмрзЛржЪрзНржЪ рж▓рзЗржнрзЗрж▓рзЗ ржЖржЫрзЗржи' });
     if (user.coins < upgrade.cost.coins || user.gems < upgrade.cost.gems || user.tokens < upgrade.cost.tokens)
-      return res.status(400).json({ error: 'পর্যাপ্ত রিসোর্স নেই' });
+      return res.status(400).json({ error: 'ржкрж░рзНржпрж╛ржкрзНржд рж░рж┐рж╕рзЛрж░рзНрж╕ ржирзЗржЗ' });
 
     user.coins -= upgrade.cost.coins;
     user.gems -= upgrade.cost.gems;
@@ -288,21 +288,21 @@ farmRouter.post('/upgrade/animal', async (req, res) => {
   try {
     const { telegramId, animalType } = req.body;
     const animalData = ANIMALS[animalType];
-    if (!animalData) return res.status(400).json({ error: 'পশু পাওয়া যায়নি' });
+    if (!animalData) return res.status(400).json({ error: 'ржкрж╢рзБ ржкрж╛ржУржпрж╝рж╛ ржпрж╛ржпрж╝ржирж┐' });
 
     const user = await User.findOne({ telegramId });
     const farm = await Farm.findOne({ userId: telegramId });
-    if (user.level < animalData.unlockLevel) return res.status(400).json({ error: `লেভেল ${animalData.unlockLevel} লাগবে` });
+    if (user.level < animalData.unlockLevel) return res.status(400).json({ error: `рж▓рзЗржнрзЗрж▓ ${animalData.unlockLevel} рж▓рж╛ржЧржмрзЗ` });
 
     const shedKey = animalData.shed;
     const currentLevel = farm[shedKey].level;
     const nextLevel = currentLevel + 1;
     const levelData = animalData.levels[nextLevel];
-    if (!levelData) return res.status(400).json({ error: 'সর্বোচ্চ লেভেলে আছেন' });
+    if (!levelData) return res.status(400).json({ error: 'рж╕рж░рзНржмрзЛржЪрзНржЪ рж▓рзЗржнрзЗрж▓рзЗ ржЖржЫрзЗржи' });
 
-    if (user.coins < levelData.cost.coins) return res.status(400).json({ error: 'পর্যাপ্ত কয়েন নেই' });
-    if (levelData.cost.gems && user.gems < levelData.cost.gems) return res.status(400).json({ error: 'পর্যাপ্ত জেম নেই' });
-    if (levelData.cost.tokens && user.tokens < levelData.cost.tokens) return res.status(400).json({ error: 'পর্যাপ্ত টোকেন নেই' });
+    if (user.coins < levelData.cost.coins) return res.status(400).json({ error: 'ржкрж░рзНржпрж╛ржкрзНржд ржХржпрж╝рзЗржи ржирзЗржЗ' });
+    if (levelData.cost.gems && user.gems < levelData.cost.gems) return res.status(400).json({ error: 'ржкрж░рзНржпрж╛ржкрзНржд ржЬрзЗржо ржирзЗржЗ' });
+    if (levelData.cost.tokens && user.tokens < levelData.cost.tokens) return res.status(400).json({ error: 'ржкрж░рзНржпрж╛ржкрзНржд ржЯрзЛржХрзЗржи ржирзЗржЗ' });
 
     user.coins -= levelData.cost.coins;
     if (levelData.cost.gems) user.gems -= levelData.cost.gems;
@@ -326,13 +326,13 @@ farmRouter.post('/collect/animal', async (req, res) => {
     const farm = await Farm.findOne({ userId: telegramId });
     const shedKey = animalData.shed;
     const shed = farm[shedKey];
-    if (shed.level === 0) return res.status(400).json({ error: 'ঘর আনলক হয়নি' });
+    if (shed.level === 0) return res.status(400).json({ error: 'ржШрж░ ржЖржирж▓ржХ рж╣ржпрж╝ржирж┐' });
 
     const levelData = animalData.levels[shed.level];
     const now = new Date();
     if (shed.lastCollected && (now - shed.lastCollected) < levelData.interval) {
       const minutes = Math.ceil((levelData.interval - (now - shed.lastCollected)) / 60000);
-      return res.status(400).json({ error: `আরো ${minutes} মিনিট অপেক্ষা করুন` });
+      return res.status(400).json({ error: `ржЖрж░рзЛ ${minutes} ржорж┐ржирж┐ржЯ ржЕржкрзЗржХрзНрж╖рж╛ ржХрж░рзБржи` });
     }
 
     const countKey = animalType === 'cow' ? 'cows' : animalType === 'chicken' ? 'chickens' : 'ducks';
@@ -354,9 +354,9 @@ farmRouter.post('/collect/animal', async (req, res) => {
 const questRouter = express.Router();
 
 const DAILY_QUESTS = [
-  { questId: 'harvest_10', title: '১০টি ফসল কাটুন', target: 10, reward: { coins: 200, gems: 1, xp: 50 } },
-  { questId: 'sell_5', title: '৫টি ফসল বিক্রি করুন', target: 5, reward: { coins: 150, xp: 30 } },
-  { questId: 'login_daily', title: 'আজকে লগইন করুন', target: 1, reward: { coins: 100, gems: 1, xp: 20 } }
+  { questId: 'harvest_10', title: 'рззрзжржЯрж┐ ржлрж╕рж▓ ржХрж╛ржЯрзБржи', target: 10, reward: { coins: 200, gems: 1, xp: 50 } },
+  { questId: 'sell_5', title: 'рзлржЯрж┐ ржлрж╕рж▓ ржмрж┐ржХрзНрж░рж┐ ржХрж░рзБржи', target: 5, reward: { coins: 150, xp: 30 } },
+  { questId: 'login_daily', title: 'ржЖржЬржХрзЗ рж▓ржЧржЗржи ржХрж░рзБржи', target: 1, reward: { coins: 100, gems: 1, xp: 20 } }
 ];
 
 questRouter.get('/:telegramId', async (req, res) => {
@@ -424,7 +424,7 @@ leaderboardRouter.get('/', async (req, res) => {
 leaderboardRouter.get('/rank/:telegramId', async (req, res) => {
   try {
     const user = await User.findOne({ telegramId: req.params.telegramId });
-    if (!user) return res.status(404).json({ error: 'ইউজার পাওয়া যায়নি' });
+    if (!user) return res.status(404).json({ error: 'ржЗржЙржЬрж╛рж░ ржкрж╛ржУржпрж╝рж╛ ржпрж╛ржпрж╝ржирж┐' });
     const rank = await User.countDocuments({ totalEarned: { $gt: user.totalEarned } });
     res.json({ success: true, rank: rank + 1, totalEarned: user.totalEarned });
   } catch (err) { res.status(500).json({ error: err.message }); }
@@ -438,7 +438,7 @@ app.use('/api/farm', farmRouter);
 app.use('/api/quest', questRouter);
 app.use('/api/leaderboard', leaderboardRouter);
 
-app.get('/', (req, res) => res.json({ status: 'Farming Game API Running 🌾' }));
+app.get('/', (req, res) => res.json({ status: 'Farming Game API Running ЁЯМ╛' }));
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`ЁЯЪА Server running on port ${PORT}`));
